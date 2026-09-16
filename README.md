@@ -8,8 +8,11 @@ Construido con **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4** y 
 ## 1. Requisitos Previos
 
 - **Node.js**: v20.x o superior.
-- **Gestor de paquetes**: `yarn` (recomendado) o `npm`.
 - **Git** instalado.
+- **Yarn**: Si no lo tienes instalado en tu PC, instálalo globalmente ejecutando:
+  ```bash
+  npm install --global yarn
+  ```
 
 ---
 
@@ -20,10 +23,13 @@ Construido con **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4** y 
 git clone <URL_DEL_REPOSITORIO>
 cd fe-web
 
-# 2. Instalar dependencias
+# 2. Instalar Yarn (solo si no lo tienes)
+npm install --global yarn
+
+# 3. Instalar dependencias del proyecto
 yarn install
 
-# 3. Iniciar servidor de desarrollo
+# 4. Iniciar servidor de desarrollo
 yarn dev
 ```
 

@@ -118,7 +118,7 @@ export default function Footer() {
               <li>
                 <Link href="/simbolos" className="hover:underline flex items-center gap-2 text-white group">
                   <CircleChevron />
-                  <span>Nuestros S\u00EDmbolos</span>
+                  <span>Nuestros Símbolos</span>
                 </Link>
               </li>
               <li>
