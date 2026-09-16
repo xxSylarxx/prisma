@@ -158,14 +158,8 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
                 </svg>
               </button>
 
-              {nosotrosOpen && (
-                <div className="absolute top-full left-0 w-52 bg-white rounded-xl shadow-xl border border-slate-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <Link
-                    href="/quienes-somos"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Quiénes Somos
-                  </Link>
+                            {nosotrosOpen && (
+                <div className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-slate-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <Link
                     href="/mision-vision"
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
@@ -173,16 +167,46 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
                     Misión y Visión
                   </Link>
                   <Link
-                    href="/padres-dominicos"
+                    href="/identidad-dominicana"
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
                   >
-                    Padres Dominicos
+                    Identidad Dominicana
                   </Link>
                   <Link
-                    href="/himno-simbolos"
+                    href="/nuestra-historia"
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
                   >
-                    Himno y Símbolos
+                    Nuestra Historia
+                  </Link>
+                  <Link
+                    href="/nuestro-patron"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Nuestro Patrón
+                  </Link>
+                  <Link
+                    href="/nuestros-directores"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Nuestros Directores
+                  </Link>
+                  <Link
+                    href="/nuestras-autoridades"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Nuestras Autoridades
+                  </Link>
+                  <Link
+                    href="/nuestros-simbolos"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Nuestros Símbolos
+                  </Link>
+                  <Link
+                    href="/nuestros-egresados"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Nuestros Egresados
                   </Link>
                 </div>
               )}
@@ -209,31 +233,49 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
                 </svg>
               </button>
 
-              {propuestaOpen && (
-                <div className="absolute top-full left-0 w-56 bg-white rounded-xl shadow-xl border border-slate-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+                            {propuestaOpen && (
+                <div className="absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-slate-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
                   <Link
-                    href="/inicial"
+                    href="/nuestra-propuesta"
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
                   >
-                    Nivel Inicial
+                    Nuestra Propuesta
                   </Link>
                   <Link
                     href="/primaria"
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
                   >
-                    Nivel Primaria
+                    Primaria
                   </Link>
                   <Link
                     href="/secundaria"
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
                   >
-                    Nivel Secundaria
+                    Secundaria
                   </Link>
                   <Link
-                    href="/talleres-pastoral"
+                    href="/ingles-cambridge"
                     className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
                   >
-                    Pastoral y Talleres
+                    Inglés y Certificación Cambridge
+                  </Link>
+                  <Link
+                    href="/psicopedagogico"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Dpto. Psicopedagógico
+                  </Link>
+                  <Link
+                    href="/pastoral-aquinense"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Pastoral Aquinense
+                  </Link>
+                  <Link
+                    href="/talleres"
+                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
+                  >
+                    Talleres
                   </Link>
                 </div>
               )}
@@ -325,15 +367,8 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
               <span>Nosotros</span>
               <span className="text-xs font-bold">{nosotrosOpen ? "▲" : "▼"}</span>
             </button>
-            {nosotrosOpen && (
+                        {nosotrosOpen && (
               <div className="pl-4 py-2 space-y-2 bg-slate-50 rounded-lg my-1">
-                <Link
-                  href="/quienes-somos"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Quiénes Somos
-                </Link>
                 <Link
                   href="/mision-vision"
                   onClick={() => setMobileMenuOpen(false)}
@@ -342,11 +377,53 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
                   Misión y Visión
                 </Link>
                 <Link
-                  href="/padres-dominicos"
+                  href="/identidad-dominicana"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block text-sm text-slate-600 font-semibold py-1"
                 >
-                  Padres Dominicos
+                  Identidad Dominicana
+                </Link>
+                <Link
+                  href="/nuestra-historia"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Nuestra Historia
+                </Link>
+                <Link
+                  href="/nuestro-patron"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Nuestro Patrón
+                </Link>
+                <Link
+                  href="/nuestros-directores"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Nuestros Directores
+                </Link>
+                <Link
+                  href="/nuestras-autoridades"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Nuestras Autoridades
+                </Link>
+                <Link
+                  href="/nuestros-simbolos"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Nuestros Símbolos
+                </Link>
+                <Link
+                  href="/nuestros-egresados"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Nuestros Egresados
                 </Link>
               </div>
             )}
@@ -362,28 +439,56 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
               <span>Propuesta Educativa</span>
               <span className="text-xs font-bold">{propuestaOpen ? "▲" : "▼"}</span>
             </button>
-            {propuestaOpen && (
+                        {propuestaOpen && (
               <div className="pl-4 py-2 space-y-2 bg-slate-50 rounded-lg my-1">
                 <Link
-                  href="/inicial"
+                  href="/nuestra-propuesta"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block text-sm text-slate-600 font-semibold py-1"
                 >
-                  Nivel Inicial
+                  Nuestra Propuesta
                 </Link>
                 <Link
                   href="/primaria"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block text-sm text-slate-600 font-semibold py-1"
                 >
-                  Nivel Primaria
+                  Primaria
                 </Link>
                 <Link
                   href="/secundaria"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block text-sm text-slate-600 font-semibold py-1"
                 >
-                  Nivel Secundaria
+                  Secundaria
+                </Link>
+                <Link
+                  href="/ingles-cambridge"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Inglés y Certificación Cambridge
+                </Link>
+                <Link
+                  href="/psicopedagogico"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Dpto. Psicopedagógico
+                </Link>
+                <Link
+                  href="/pastoral-aquinense"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Pastoral Aquinense
+                </Link>
+                <Link
+                  href="/talleres"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block text-sm text-slate-600 font-semibold py-1"
+                >
+                  Talleres
                 </Link>
               </div>
             )}
