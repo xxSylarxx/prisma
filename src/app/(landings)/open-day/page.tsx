@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Open Day 2026 | Colegio Santo Tom\u00E1s de Aquino",
-  description: "Conoce nuestras instalaciones, propuesta pedag\u00F3gica y equipo docente en vivo.",
+  title: "Open Day 2026 | Colegio Santo Tomás de Aquino",
+  description: "Conoce nuestras instalaciones, propuesta pedagógica y equipo docente en vivo.",
 };
 
 export default function OpenDayPage() {
@@ -13,10 +13,10 @@ export default function OpenDayPage() {
           Evento Exclusivo
         </span>
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-          Open Day Santo Tom\u00E1s de Aquino
+          Open Day Santo Tomás de Aquino
         </h1>
         <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-          Visita nuestro campus en Jr. Caman\u00E1 170, Cercado de Lima y participa de clases demostrativas y visitas guiadas.
+          Visita nuestro campus en Jr. Camaná 170, Cercado de Lima y participa de clases demostrativas y visitas guiadas.
         </p>
       </div>
     </section>

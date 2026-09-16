@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Admisi\u00F3n 2026 | Colegio Santo Tom\u00E1s de Aquino",
-  description: "Proceso de admisi\u00F3n 2026 abierto para niveles Inicial, Primaria y Secundaria.",
+  title: "Admisión 2026 | Colegio Santo Tomás de Aquino",
+  description: "Proceso de admisión 2026 abierto para niveles Inicial, Primaria y Secundaria.",
 };
 
 export default function AdmisionPage() {
@@ -13,10 +13,10 @@ export default function AdmisionPage() {
           Vacantes Limitadas 2026
         </span>
         <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
-          Proceso de Admisi\u00F3n 2026
+          Proceso de Admisión 2026
         </h1>
         <p className="text-base sm:text-lg text-slate-600 max-w-2xl mx-auto">
-          Asegura la vacante de tu hijo en una instituci\u00F3n con m\u00E1s de 100 a\u00F1os de excelencia acad\u00E9mica y valores cat\u00F3licos.
+          Asegura la vacante de tu hijo en una institución con más de 100 años de excelencia académica y valores católicos.
         </p>
         <div className="pt-4">
           <a
@@ -25,7 +25,7 @@ export default function AdmisionPage() {
             rel="noopener noreferrer"
             className="inline-block px-8 py-4 rounded-full bg-[#0d59b2] hover:bg-[#094182] text-white font-black text-sm tracking-wide shadow-xl transition-all hover:scale-105 active:scale-95"
           >
-            Solicitar Informaci\u00F3n de Admisi\u00F3n
+            Solicitar Información de Admisión
           </a>
         </div>
       </div>

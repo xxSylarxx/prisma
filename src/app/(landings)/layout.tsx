@@ -7,13 +7,13 @@ export default function LandingLayout({
 }) {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
-      {/* Header m\u00EDnimo de conversi\u00F3n */}
+      {/* Header mínimo de conversión */}
       <header className="w-full bg-white border-b border-slate-200 py-3.5 px-4 sm:px-8">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <img
               src="/images/logo-sta-footer.png"
-              alt="Colegio Santo Tom\u00E1s de Aquino"
+              alt="Colegio Santo Tomás de Aquino"
               className="h-10 w-auto object-contain"
             />
           </Link>
@@ -33,9 +33,9 @@ export default function LandingLayout({
         {children}
       </main>
 
-      {/* Footer m\u00EDnimo */}
+      {/* Footer mínimo */}
       <footer className="w-full bg-slate-900 text-slate-400 py-6 text-center text-xs">
-        <p>\u00A9 2026 Colegio Santo Tomás de Aquino - Padres Dominicos. Todos los derechos reservados.</p>
+        <p>© 2026 Colegio Santo Tomás de Aquino - Padres Dominicos. Todos los derechos reservados.</p>
       </footer>
     </div>
   );
