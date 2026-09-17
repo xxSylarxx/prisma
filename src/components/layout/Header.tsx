@@ -2,16 +2,35 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import type { Menu } from "@/services/menu";
 
 interface HeaderProps {
-  contactHref?: string;
+  menus: Menu[];
 }
 
-export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
+function MenuLink({ menu, className, onClick }: { menu: Menu; className: string; onClick?: () => void }) {
+  const ruta = menu.ruta;
+  if (!ruta) return <span className={className}>{menu.nombre}</span>;
+  if (/^https?:\/\//i.test(ruta)) {
+    return <a href={ruta} target="_blank" rel="noopener noreferrer" className={className} onClick={onClick}>{menu.nombre}</a>;
+  }
+  if (!ruta.startsWith("/") || ruta.startsWith("//")) return <span className={className}>{menu.nombre}</span>;
+  return <Link href={ruta} className={className} onClick={onClick}>{menu.nombre}</Link>;
+}
+export default function Header({ menus }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [nosotrosOpen, setNosotrosOpen] = useState(false);
-  const [propuestaOpen, setPropuestaOpen] = useState(false);
-
+  const [openMenuId, setOpenMenuId] = useState<number | null>(null);
+  const headerMenus = menus
+    .filter((menu) => menu.posicion === "HEADER")
+    .sort((a, b) => a.orden - b.orden || a.id - b.id);
+  const roots = headerMenus.filter((menu) => menu.padre_id === null);
+  const cubicol = roots.find((menu) => menu.nombre.toLowerCase() === "cubicol");
+  const navigation = roots.filter((menu) => menu !== cubicol);
+  const childrenOf = (id: number) => headerMenus.filter((menu) => menu.padre_id === id);
+  const closeMenu = () => {
+    setMobileMenuOpen(false);
+    setOpenMenuId(null);
+  };
   return (
     <header className="w-full sticky top-0 z-50 shadow-sm bg-white">
       {/* 1. TOP BAR AZUL INSTITUCIONAL */}
@@ -128,204 +147,38 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
           </Link>
 
           {/* Menú de Navegación Escritorio */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-bold text-slate-900">
-            {/* Inicio */}
-            <Link
-              href="/"
-              className="hover:text-[#0d59b2] transition-colors py-2"
-            >
-              Inicio
-            </Link>
-
-            {/* Nosotros (Dropdown) */}
-            <div
-              className="relative group"
-              onMouseEnter={() => setNosotrosOpen(true)}
-              onMouseLeave={() => setNosotrosOpen(false)}
-            >
-              <button
-                type="button"
-                className="flex items-center gap-1.5 hover:text-[#0d59b2] transition-colors py-2 focus:outline-none"
-              >
-                <span>Nosotros</span>
-                <svg
-                  className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#0d59b2] transition-transform duration-200 group-hover:translate-y-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-                            {nosotrosOpen && (
-                <div className="absolute top-full left-0 w-64 bg-white rounded-xl shadow-xl border border-slate-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <Link
-                    href="/mision-vision"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Misión y Visión
-                  </Link>
-                  <Link
-                    href="/identidad-dominicana"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Identidad Dominicana
-                  </Link>
-                  <Link
-                    href="/nuestra-historia"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Nuestra Historia
-                  </Link>
-                  <Link
-                    href="/nuestro-patron"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Nuestro Patrón
-                  </Link>
-                  <Link
-                    href="/nuestros-directores"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Nuestros Directores
-                  </Link>
-                  <Link
-                    href="/nuestras-autoridades"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Nuestras Autoridades
-                  </Link>
-                  <Link
-                    href="/nuestros-simbolos"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Nuestros Símbolos
-                  </Link>
-                  <Link
-                    href="/nuestros-egresados"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Nuestros Egresados
-                  </Link>
+          <nav aria-label="Navegación principal" className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-bold text-slate-900">
+            {navigation.map((menu) => {
+              const children = childrenOf(menu.id);
+              if (children.length === 0) return <MenuLink key={menu.id} menu={menu} className="hover:text-[#0d59b2] transition-colors py-2" />;
+              const isOpen = openMenuId === menu.id;
+              return (
+                <div key={menu.id} className="relative group" onMouseEnter={() => setOpenMenuId(menu.id)} onMouseLeave={() => setOpenMenuId(null)}
+                  onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget)) setOpenMenuId(null); }}
+                  onKeyDown={(event) => { if (event.key === "Escape") setOpenMenuId(null); }}>
+                  <button type="button" aria-expanded={isOpen} aria-controls={`desktop-menu-${menu.id}`}
+                    onClick={() => setOpenMenuId(isOpen ? null : menu.id)}
+                    className="flex items-center gap-1.5 hover:text-[#0d59b2] transition-colors py-2 focus:outline-none">
+                    <span>{menu.nombre}</span>
+                    <svg className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#0d59b2] transition-transform duration-200 group-hover:translate-y-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  {isOpen && (
+                    <div id={`desktop-menu-${menu.id}`} className={`absolute top-full left-0 ${children.some((child) => child.nombre.length > 25) ? "w-72" : "w-64"} bg-white rounded-xl shadow-xl border border-slate-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150`}>
+                      {children.map((child) => <MenuLink key={child.id} menu={child} onClick={closeMenu} className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors" />)}
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-
-            {/* Propuesta Educativa (Dropdown) */}
-            <div
-              className="relative group"
-              onMouseEnter={() => setPropuestaOpen(true)}
-              onMouseLeave={() => setPropuestaOpen(false)}
-            >
-              <button
-                type="button"
-                className="flex items-center gap-1.5 hover:text-[#0d59b2] transition-colors py-2 focus:outline-none"
-              >
-                <span>Propuesta Educativa</span>
-                <svg
-                  className="w-3.5 h-3.5 text-slate-600 group-hover:text-[#0d59b2] transition-transform duration-200 group-hover:translate-y-0.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-                            {propuestaOpen && (
-                <div className="absolute top-full left-0 w-72 bg-white rounded-xl shadow-xl border border-slate-100 py-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-                  <Link
-                    href="/nuestra-propuesta"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Nuestra Propuesta
-                  </Link>
-                  <Link
-                    href="/primaria"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Primaria
-                  </Link>
-                  <Link
-                    href="/secundaria"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Secundaria
-                  </Link>
-                  <Link
-                    href="/ingles-cambridge"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Inglés y Certificación Cambridge
-                  </Link>
-                  <Link
-                    href="/psicopedagogico"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Dpto. Psicopedagógico
-                  </Link>
-                  <Link
-                    href="/pastoral-aquinense"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Pastoral Aquinense
-                  </Link>
-                  <Link
-                    href="/talleres"
-                    className="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50 hover:text-[#0d59b2] font-semibold transition-colors"
-                  >
-                    Talleres
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Infraestructura */}
-            <Link
-              href="/infraestructura"
-              className="hover:text-[#0d59b2] transition-colors py-2"
-            >
-              Infraestructura
-            </Link>
-
-            {/* Admisión */}
-            <Link
-              href="/admision"
-              className="hover:text-[#0d59b2] transition-colors py-2"
-            >
-              Admisión
-            </Link>
-
-            {/* Contacto */}
-            <Link
-              href="/contacto"
-              className="hover:text-[#0d59b2] transition-colors py-2"
-            >
-              Contacto
-            </Link>
-
-            {/* Botón CUBICOL */}
-            <a
-              href="https://santotomasdeaquino.cubicol.pe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-2 px-6 py-2.5 rounded-full bg-[#0d59b2] hover:bg-[#0b488f] text-white font-extrabold text-sm tracking-wide lowercase shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center"
-            >
-              cubicol
-            </a>
+              );
+            })}
+            {cubicol && <MenuLink menu={cubicol} className="ml-2 px-6 py-2.5 rounded-full bg-[#0d59b2] hover:bg-[#0b488f] text-white font-extrabold text-sm tracking-wide lowercase shadow-md hover:shadow-lg transition-all active:scale-95 flex items-center justify-center" />}
           </nav>
 
           {/* Botón Menú Móvil */}
           <div className="flex items-center gap-3 lg:hidden">
-            <a
-              href="https://santotomasdeaquino.cubicol.pe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-1.5 rounded-full bg-[#0d59b2] text-white font-extrabold text-xs lowercase shadow-sm"
-            >
-              cubicol
-            </a>
+            {cubicol && <MenuLink menu={cubicol} className="px-4 py-1.5 rounded-full bg-[#0d59b2] text-white font-extrabold text-xs lowercase shadow-sm" />}
+
 
             <button
               type="button"
@@ -349,174 +202,28 @@ export default function Header({ contactHref = "/#contacto" }: HeaderProps) {
       {/* MENÚ MÓVIL DESPLEGABLE */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-slate-200 px-5 py-4 space-y-3 shadow-xl">
-          <Link
-            href="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-slate-800 font-bold border-b border-slate-100"
-          >
-            Inicio
-          </Link>
-
-          {/* Dropdown Móvil: Nosotros */}
-          <div>
-            <button
-              type="button"
-              onClick={() => setNosotrosOpen(!nosotrosOpen)}
-              className="w-full flex items-center justify-between py-2 text-slate-800 font-bold border-b border-slate-100"
-            >
-              <span>Nosotros</span>
-              <span className="text-xs font-bold">{nosotrosOpen ? "▲" : "▼"}</span>
-            </button>
-                        {nosotrosOpen && (
-              <div className="pl-4 py-2 space-y-2 bg-slate-50 rounded-lg my-1">
-                <Link
-                  href="/mision-vision"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Misión y Visión
-                </Link>
-                <Link
-                  href="/identidad-dominicana"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Identidad Dominicana
-                </Link>
-                <Link
-                  href="/nuestra-historia"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Nuestra Historia
-                </Link>
-                <Link
-                  href="/nuestro-patron"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Nuestro Patrón
-                </Link>
-                <Link
-                  href="/nuestros-directores"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Nuestros Directores
-                </Link>
-                <Link
-                  href="/nuestras-autoridades"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Nuestras Autoridades
-                </Link>
-                <Link
-                  href="/nuestros-simbolos"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Nuestros Símbolos
-                </Link>
-                <Link
-                  href="/nuestros-egresados"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Nuestros Egresados
-                </Link>
+          {navigation.map((menu, index) => {
+            const children = childrenOf(menu.id);
+            const isOpen = openMenuId === menu.id;
+            if (children.length === 0) {
+              return <MenuLink key={menu.id} menu={menu} onClick={closeMenu} className={`block py-2 text-slate-800 font-bold${index < navigation.length - 1 ? " border-b border-slate-100" : ""}`} />;
+            }
+            return (
+              <div key={menu.id}>
+                <button type="button" aria-expanded={isOpen} aria-controls={`mobile-menu-${menu.id}`}
+                  onClick={() => setOpenMenuId(isOpen ? null : menu.id)}
+                  className="w-full flex items-center justify-between py-2 text-slate-800 font-bold border-b border-slate-100">
+                  <span>{menu.nombre}</span>
+                  <span className="text-xs font-bold" aria-hidden="true">{isOpen ? "▲" : "▼"}</span>
+                </button>
+                {isOpen && (
+                  <div id={`mobile-menu-${menu.id}`} className="pl-4 py-2 space-y-2 bg-slate-50 rounded-lg my-1">
+                    {children.map((child) => <MenuLink key={child.id} menu={child} onClick={closeMenu} className="block text-sm text-slate-600 font-semibold py-1" />)}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
-
-          {/* Dropdown Móvil: Propuesta Educativa */}
-          <div>
-            <button
-              type="button"
-              onClick={() => setPropuestaOpen(!propuestaOpen)}
-              className="w-full flex items-center justify-between py-2 text-slate-800 font-bold border-b border-slate-100"
-            >
-              <span>Propuesta Educativa</span>
-              <span className="text-xs font-bold">{propuestaOpen ? "▲" : "▼"}</span>
-            </button>
-                        {propuestaOpen && (
-              <div className="pl-4 py-2 space-y-2 bg-slate-50 rounded-lg my-1">
-                <Link
-                  href="/nuestra-propuesta"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Nuestra Propuesta
-                </Link>
-                <Link
-                  href="/primaria"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Primaria
-                </Link>
-                <Link
-                  href="/secundaria"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Secundaria
-                </Link>
-                <Link
-                  href="/ingles-cambridge"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Inglés y Certificación Cambridge
-                </Link>
-                <Link
-                  href="/psicopedagogico"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Dpto. Psicopedagógico
-                </Link>
-                <Link
-                  href="/pastoral-aquinense"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Pastoral Aquinense
-                </Link>
-                <Link
-                  href="/talleres"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block text-sm text-slate-600 font-semibold py-1"
-                >
-                  Talleres
-                </Link>
-              </div>
-            )}
-          </div>
-
-          <Link
-            href="/infraestructura"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-slate-800 font-bold border-b border-slate-100"
-          >
-            Infraestructura
-          </Link>
-
-          <Link
-            href="/admision"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-slate-800 font-bold border-b border-slate-100"
-          >
-            Admisión
-          </Link>
-
-          <Link
-            href="/contacto"
-            onClick={() => setMobileMenuOpen(false)}
-            className="block py-2 text-slate-800 font-bold"
-          >
-            Contacto
-          </Link>
+            );
+          })}
         </div>
       )}
     </header>
