@@ -14,6 +14,13 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://santotomasdeaquino.edu.pe"),
+  icons: {
+    icon: [
+      { url: "/images/icon.png?v=3", type: "image/png" },
+    ],
+    shortcut: "/images/icon.png?v=3",
+    apple: "/images/icon.png?v=3",
+  },
   title: "Colegio Santo Tomás de Aquino | Padres Dominicos",
   description: "Colegio Santo Tomás de Aquino - Formando líderes con valores cristianos y excelencia académica en Lima, Perú.",
 };
